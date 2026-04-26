@@ -2,6 +2,7 @@ import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 
 import { PostStats } from "@/components/shared";
+import { getFileViewUrl } from "@/lib/appwrite/api";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
 
@@ -21,7 +22,9 @@ const PostCard = ({ post }: PostCardProps) => {
           <Link to={`/profile/${post.creator.$id}`}>
             <img
               src={
-                post.creator?.imageUrl ||
+                (post.creator?.imageId
+                  ? getFileViewUrl(post.creator.imageId)
+                  : post.creator?.imageUrl) ||
                 "/assets/icons/profile-placeholder.svg"
               }
               alt="creator"
@@ -70,7 +73,10 @@ const PostCard = ({ post }: PostCardProps) => {
         </div>
 
         <img
-          src={post.imageUrl || "/assets/icons/profile-placeholder.svg"}
+          src={
+            (post.imageId ? getFileViewUrl(post.imageId) : post.imageUrl) ||
+            "/assets/icons/profile-placeholder.svg"
+          }
           alt="post image"
           className="post-card_img"
         />

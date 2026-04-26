@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { IUser } from "@/types";
-import { getCurrentUser } from "@/lib/appwrite/api";
+import { getCurrentUser, getFileViewUrl } from "@/lib/appwrite/api";
 
 export const INITIAL_USER = {
   id: "",
@@ -49,7 +49,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: currentAccount.name,
           username: currentAccount.username,
           email: currentAccount.email,
-          imageUrl: currentAccount.imageUrl,
+          imageId: currentAccount.imageId,
+          imageUrl: currentAccount.imageId
+            ? getFileViewUrl(currentAccount.imageId)
+            : currentAccount.imageUrl,
           bio: currentAccount.bio,
         });
         setIsAuthenticated(true);

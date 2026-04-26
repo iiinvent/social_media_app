@@ -9,6 +9,7 @@ import {
   useGetUserPosts,
   useDeletePost,
 } from "@/lib/react-query/queries";
+import { getFileViewUrl } from "@/lib/appwrite/api";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
 
@@ -54,7 +55,7 @@ const PostDetails = () => {
       ) : (
         <div className="post_details-card">
           <img
-            src={post?.imageUrl}
+            src={post?.imageId ? getFileViewUrl(post.imageId) : post?.imageUrl}
             alt="creator"
             className="post_details-img"
           />
@@ -66,7 +67,9 @@ const PostDetails = () => {
                 className="flex items-center gap-3">
                 <img
                   src={
-                    post?.creator.imageUrl ||
+                    (post?.creator?.imageId
+                      ? getFileViewUrl(post.creator.imageId)
+                      : post?.creator?.imageUrl) ||
                     "/assets/icons/profile-placeholder.svg"
                   }
                   alt="creator"

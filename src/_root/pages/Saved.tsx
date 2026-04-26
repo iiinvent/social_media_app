@@ -2,6 +2,7 @@ import { Models } from "appwrite";
 
 import { GridPostList, Loader } from "@/components/shared";
 import { useGetCurrentUser } from "@/lib/react-query/queries";
+import { getFileViewUrl } from "@/lib/appwrite/api";
 
 const Saved = () => {
   const { data: currentUser } = useGetCurrentUser();
@@ -10,7 +11,9 @@ const Saved = () => {
     .map((savePost: Models.Document) => ({
       ...savePost.post,
       creator: {
-        imageUrl: currentUser.imageUrl,
+        imageUrl: currentUser.imageId
+          ? getFileViewUrl(currentUser.imageId)
+          : currentUser.imageUrl,
       },
     }))
     .reverse();

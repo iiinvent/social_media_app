@@ -18,6 +18,7 @@ import { ProfileUploader, Loader } from "@/components/shared";
 import { ProfileValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById, useUpdateUser } from "@/lib/react-query/queries";
+import { getFileViewUrl } from "@/lib/appwrite/api";
 
 const UpdateProfile = () => {
   const { toast } = useToast();
@@ -68,7 +69,10 @@ const UpdateProfile = () => {
       ...user,
       name: updatedUser?.name,
       bio: updatedUser?.bio,
-      imageUrl: updatedUser?.imageUrl,
+      imageId: updatedUser?.imageId,
+      imageUrl: updatedUser?.imageId
+        ? getFileViewUrl(updatedUser.imageId)
+        : updatedUser?.imageUrl,
     });
     return navigate(`/profile/${id}`);
   };
@@ -99,7 +103,11 @@ const UpdateProfile = () => {
                   <FormControl>
                     <ProfileUploader
                       fieldChange={field.onChange}
-                      mediaUrl={currentUser.imageUrl}
+                      mediaUrl={
+                        currentUser.imageId
+                          ? getFileViewUrl(currentUser.imageId)
+                          : currentUser.imageUrl
+                      }
                     />
                   </FormControl>
                   <FormMessage className="shad-form_message" />

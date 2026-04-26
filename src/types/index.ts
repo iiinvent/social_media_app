@@ -36,6 +36,7 @@ export type IUser = {
   name: string;
   username: string;
   email: string;
+  imageId?: string;
   imageUrl: string;
   bio: string;
 };

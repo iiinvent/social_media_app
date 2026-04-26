@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
 import { FileUploader, Loader } from "@/components/shared";
 import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
+import { getFileViewUrl } from "@/lib/appwrite/api";
 
 type PostFormProps = {
   post?: Models.Document;
@@ -110,7 +111,11 @@ const PostForm = ({ post, action }: PostFormProps) => {
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
-                  mediaUrl={post?.imageUrl}
+                  mediaUrl={
+                    post?.imageId
+                      ? getFileViewUrl(post.imageId)
+                      : post?.imageUrl
+                  }
                 />
               </FormControl>
               <FormMessage className="shad-form_message" />
